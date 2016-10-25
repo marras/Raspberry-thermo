@@ -20,7 +20,8 @@ def main():
 
         if len(temps) != 3:
             display.println(1, "SENSOR ERROR!")
-            display.println(2, "Sensors avail: %d", len(temps))
+            display.println(2, "Sensors avail: %d" % len(temps))
+            print "Error: only %d sensors available!" % len(temps)
         else:
             handleSuccessfulRead(temps)
 
