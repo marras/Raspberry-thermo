@@ -31,5 +31,4 @@ def read_temp(i):
         return "%.1f" % temp_c
 
 def read():
-    for i in range(len(device_folders)):
-        temps.append(read_temp(i))
+    return [read_temp(i) for i in range(len(device_folders))]
