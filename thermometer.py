@@ -2,12 +2,15 @@
 # -*- coding: utf-8 -*-
 import display
 import sensor
+import time
+import requests
 import RPi.GPIO as GPIO
 
 def handleSuccessfulRead (temps):
     display.println(1, "Hey Babe! %s" % temps[0])
     display.println(2, "%s %s" % (temps[1], temps[2]))
     print(temps[0], temps[1], temps[2])
+    r = requests.post('http://requestb.in/s6w9oqs6', data = {'temps': temps})
     time.sleep(1)
 
 def main():
