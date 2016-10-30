@@ -1,3 +1,4 @@
 extras/
 *.pyc
 signing_code
+log.txt
