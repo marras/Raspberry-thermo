@@ -9,6 +9,7 @@ import hashlib
 import RPi.GPIO as GPIO
 
 signing_code = ''
+sleep_time = 0
 
 def handleSuccessfulRead (temps):
     display.println(1, "Hey Babe! %s" % temps[0])
@@ -21,7 +22,6 @@ def handleSuccessfulRead (temps):
     r = requests.post('http://lab-monitor.herokuapp.com/data', data = json.dumps({"values": data, "signature": signature}), headers=headers)
     if r.status_code != 200:
         print "Failed to send data to server! %s" % r.text
-    time.sleep(1)
 
 def main():
     display.lcd_init()
@@ -35,10 +35,15 @@ def main():
         else:
             handleSuccessfulRead(temps)
 
+	time.sleep(sleep_time)
+
 if __name__ == '__main__':
     try:
 	f = open('signing_code')
 	signing_code = f.read().rstrip()
+	f.close()
+	f = open('sleep_time')
+	sleep_time = int(f.read().rstrip())
 	f.close()
         main()
     except KeyboardInterrupt:
