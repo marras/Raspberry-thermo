@@ -29,7 +29,7 @@ def handleSuccessfulRead (temps):
         if r.status_code != 200:
             log("Failed to send data to server! %s" % r.text)
     except ConnectionError as ex:
-        log("Cannot connect to server! Error: %s" % ex.strerror)
+        log("Cannot connect to server! Error: %s" % ex)
 
 def main():
     display.lcd_init()
