@@ -7,6 +7,7 @@ import requests
 import json
 import hashlib
 import RPi.GPIO as GPIO
+from requests.exceptions import ConnectionError
 
 signing_code = ''
 sleep_time = 0
@@ -24,7 +25,7 @@ def handleSuccessfulRead (temps):
     signature = hashlib.md5(doc_to_sign).hexdigest()
     headers = {'Content-Type': 'application/json'}
     try:
-        r = requests.post('http://lab-monitor.herokuapp.com/data', data = json.dumps({"values": data, "signature": signature}), headers=headers)
+        r = requests.post('http://150.254.80.131/data', data = json.dumps({"values": data, "signature": signature}), headers=headers)
         if r.status_code != 200:
             log("Failed to send data to server! %s" % r.text)
     except ConnectionError as ex:
