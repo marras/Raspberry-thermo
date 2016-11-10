@@ -11,12 +11,23 @@ from requests.exceptions import ConnectionError
 
 signing_code = ''
 sleep_time = 0
+tunnel = ""
+
+def getNgrokTunnel():
+    global tunnel
+    try:
+         r = requests.get('http://localhost:4040/api/tunnels')
+         tunnel = json.loads(r.text)['tunnels'][0]['public_url']
+    except ConnectionError:
+	 tunnel = "No active tunnel!"
+    log("Tunnel: %s" % tunnel)
 
 def log(*args):
     timestamp = strftime("%Y-%m-%d %H:%M:%S", gmtime())
     print timestamp, args
 
 def handleSuccessfulRead (temps):
+    global tunnel
     display.println(1, "Hey Babe! %s" % temps[0])
     display.println(2, "%s %s" % (temps[1], temps[2]))
     log(temps[0], temps[1], temps[2])
@@ -25,7 +36,7 @@ def handleSuccessfulRead (temps):
     signature = hashlib.md5(doc_to_sign).hexdigest()
     headers = {'Content-Type': 'application/json'}
     try:
-        r = requests.post('http://150.254.80.131/data', data = json.dumps({"values": data, "signature": signature}), headers=headers)
+        r = requests.post('http://150.254.80.131/data', data = json.dumps({"values": data, "signature": signature, "tunnel": tunnel}), headers=headers)
         if r.status_code != 200:
             log("Failed to send data to server! %s" % r.text)
     except ConnectionError as ex:
@@ -53,6 +64,7 @@ if __name__ == '__main__':
 	f = open('sleep_time')
 	sleep_time = int(f.read().rstrip())
 	f.close()
+	getNgrokTunnel()
         main()
     except KeyboardInterrupt:
         GPIO.cleanup()
