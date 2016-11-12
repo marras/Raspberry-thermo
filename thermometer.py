@@ -20,6 +20,10 @@ def getNgrokTunnel():
          tunnel = json.loads(r.text)['tunnels'][0]['public_url']
     except ConnectionError:
 	 tunnel = "No active tunnel!"
+	 log("Ngrok not running yet.")
+    except IndexError:
+	 log("Failed to parse Ngrok API response")
+	 tunnel = "No active tunnel!"
     log("Tunnel: %s" % tunnel)
 
 def log(*args):
@@ -44,7 +48,14 @@ def handleSuccessfulRead (temps):
 
 def main():
     display.lcd_init()
+
+    measurement_number = 0
+
     while True:
+	# Refresh Ngrok data every 10 measurements
+	if measurement_number % 10 == 0:
+	    getNgrokTunnel()
+
         temps = sensor.read()
 
         if len(temps) != 3:
@@ -55,6 +66,7 @@ def main():
             handleSuccessfulRead(temps)
 
 	sleep(sleep_time)
+	measurement_number += 1
 
 if __name__ == '__main__':
     try:
@@ -64,7 +76,6 @@ if __name__ == '__main__':
 	f = open('sleep_time')
 	sleep_time = int(f.read().rstrip())
 	f.close()
-	getNgrokTunnel()
         main()
     except KeyboardInterrupt:
         GPIO.cleanup()
