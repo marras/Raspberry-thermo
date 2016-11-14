@@ -28,8 +28,8 @@ def log(*args):
 
 def handleSuccessfulRead (temps):
     global tunnel
-    display.println(1, "Hey Babe! %s" % temps[0])
-    display.println(2, "%s %s" % (temps[1], temps[2]))
+    display.println(1, "R %s G %s B %s" % tuple(temps))
+    display.println(2, "Status: OK :)")
     log(temps[0], temps[1], temps[2])
     data = {'Temp1': temps[0], 'Temp2': temps[1], 'Temp3': temps[2]}
     doc_to_sign = json.dumps(data, separators=(',',':')) + signing_code
