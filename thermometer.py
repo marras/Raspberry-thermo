@@ -32,7 +32,7 @@ def log(*args):
 
 def handleSuccessfulRead (temps):
     global tunnel
-    display.println(1, "R %s G %s B %s" % tuple(temps))
+    display.println(1, "%s %s %s" % tuple(temps))
     display.println(2, "Status: OK :)")
     log(temps[0], temps[1], temps[2])
     data = {'Temp1': temps[0], 'Temp2': temps[1], 'Temp3': temps[2]}
