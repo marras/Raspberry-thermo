@@ -37,8 +37,8 @@ def handleSuccessfulRead (temps):
     global tunnel, status
     display.println(1, "%s %s %s" % tuple(temps))
     display.println(2, status)
-    log(temps[0], temps[1], temps[2])
-    data = {'Temp1': temps[0], 'Temp2': temps[1], 'Temp3': temps[2]}
+    log(temps)
+    data = dict(zip(sensor.ids(), temps))
     doc_to_sign = json.dumps(data, separators=(',',':')) + signing_code
     signature = hashlib.md5(doc_to_sign).hexdigest()
     headers = {'Content-Type': 'application/json'}
@@ -55,6 +55,8 @@ def handleSuccessfulRead (temps):
 
 def main():
     measurement_number = 0
+    sensor_ids = sensor.ids()
+    print "IDS: ", sensor_ids
 
     while True:
         # Refresh Ngrok data and clean up LCD display every 10 measurements

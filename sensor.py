@@ -9,6 +9,10 @@ os.system('modprobe w1-therm')
 base_dir = '/sys/bus/w1/devices/'
 device_folders = glob.glob(base_dir + '28*')
 
+# Expose sensor IDs
+def ids():
+    return device_folders
+
 # Read output from a thermometer
 def read_temp_raw(i):
     device_file = device_folders[i] + '/w1_slave'
