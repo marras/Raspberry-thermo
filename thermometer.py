@@ -70,7 +70,8 @@ def main():
             display.println(1, "SENSOR ERROR!")
             display.println(2, "Sensors avail: %d" % len(temps))
             log("Error: only %d sensors available!" % len(temps))
-        else:
+
+        if len(temps) > 0:
             handleSuccessfulRead(temps)
 
         sleep(sleep_time)
