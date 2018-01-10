@@ -11,7 +11,7 @@ device_folders = glob.glob(base_dir + '28*')
 
 # Expose sensor IDs
 def ids():
-    return device_folders
+    return [folder.replace(base_dir, '') for folder in device_folders]
 
 # Read output from a thermometer
 def read_temp_raw(i):
