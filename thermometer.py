@@ -54,6 +54,7 @@ def handleSuccessfulRead (temps):
         log("Cannot connect to server! Error: %s" % ex)
 
 def main():
+    global status
     measurement_number = 0
     sensor_ids = sensor.ids()
     print "IDS: ", sensor_ids
@@ -68,11 +69,12 @@ def main():
 
         if len(temps) != 3:
             display.println(1, "SENSOR ERROR!")
-            display.println(2, "Sensors avail: %d" % len(temps))
+            status = "Sensors avail: %d" % len(temps)
             log("Error: only %d sensors available!" % len(temps))
+        else:
+            status = "Status: OK :)"
 
-        if len(temps) > 0:
-            handleSuccessfulRead(temps)
+        handleSuccessfulRead(temps)
 
         sleep(sleep_time)
         measurement_number += 1
