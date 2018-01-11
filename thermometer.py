@@ -35,7 +35,7 @@ def log(*args):
 
 def handleSuccessfulRead (temps):
     global tunnel, status
-    display.println(1, "%s %s %s" % tuple(temps))
+    display.println(1, " ".join(str(t) for t in temps))
     display.println(2, status)
     log(temps)
     data = dict(zip(sensor.ids(), temps))
